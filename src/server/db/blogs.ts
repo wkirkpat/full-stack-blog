@@ -2,19 +2,22 @@ import { Connection } from "./index";
 
 export const getBlogs = async () => {
   return new Promise((resolve, reject) => {
-    Connection.query("Select * from blogs", (err, results) => {
-      if (err) {
-        return reject(err);
+    Connection.query(
+      "SELECT authors.name, blogs.* FROM blogs JOIN authors ON blogs.authorid = authors.id",
+      (err, results) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(results);
       }
-      resolve(results);
-    });
+    );
   });
 };
 
 export const getBlog = async (id: string) => {
   return new Promise((resolve, reject) => {
     Connection.query(
-      "Select * from blogs where id = ?",
+      "SELECT authors.name, blogs.* FROM blogs JOIN authors ON blogs.authorid = authors.id where blogs.id = ?",
       [id],
       (err, results) => {
         if (err) {
@@ -29,13 +32,13 @@ export const getBlog = async (id: string) => {
 export const newBlog = async (
   title: string,
   content: string,
-  authorid: string,
+  author: string,
   tag: string
 ) => {
   return new Promise((resolve, reject) => {
     Connection.query(
       "call spNewBlog(?,?,?,?)",
-      [title, content, authorid, tag],
+      [title, content, author, tag],
       (err, results) => {
         if (err) {
           return reject(err);
@@ -43,7 +46,7 @@ export const newBlog = async (
         resolve(results.insertId);
       }
     );
-  })
+  });
 };
 
 export const deleteBlog = async (id: string) => {
@@ -76,16 +79,27 @@ export const updateBlog = async (
   });
 };
 
-export const getBlogTags = async (id:string) => {
-    return new Promise((resolve, reject) => {
-        Connection.query("Call spBlogTags(?)", [id], (err, results) => {
-            if(err) {
-                return reject(err)
-            }
-            resolve(results);
-        })
-    })
-}
+export const getBlogTags = async (id: string) => {
+  return new Promise((resolve, reject) => {
+    Connection.query("Call spBlogTags(?)", [id], (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+};
+
+export const getAllTags = async () => {
+  return new Promise((resolve, reject) => {
+    Connection.query("SELECT * from tags", (err, results) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(results);
+    });
+  });
+};
 
 export default {
   getBlogs,
@@ -93,5 +107,6 @@ export default {
   newBlog,
   deleteBlog,
   updateBlog,
-  getBlogTags
+  getBlogTags,
+  getAllTags,
 };

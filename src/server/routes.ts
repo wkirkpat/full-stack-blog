@@ -29,7 +29,7 @@ router.post("/api/blogs", async (req, res) => {
       await DB.Blogs.newBlog(
         req.body.title,
         req.body.content,
-        req.body.authorid,
+        req.body.author,
         req.body.tag
       )
     );
@@ -66,6 +66,15 @@ router.get("/api/blogs/:id/tags", async (req, res) => {
         console.log(e);
         res.sendStatus(500);
     }
+})
+
+router.get("/api/tags", async (req, res) => {
+  try{
+    res.json(await DB.Blogs.getAllTags());
+  } catch(e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
 })
 
 export default router;
