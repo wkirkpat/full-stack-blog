@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, Link } from "react-router-dom";
 
 const Blog: React.FC<IBlogProps> = (props) => {
   const [blog, setBlog] = useState<Blog>({
@@ -8,7 +8,7 @@ const Blog: React.FC<IBlogProps> = (props) => {
     content: "",
     authorid: 0,
     name: "",
-    id: 0
+    id: 0,
   });
   const [tags, setTags] = useState<Tags[]>([]);
 
@@ -51,10 +51,11 @@ const Blog: React.FC<IBlogProps> = (props) => {
         );
       })}
       <div>
-          <p className="mt-5">{blog.content}</p>
+        <p className="mt-5">{blog.content}</p>
+        <Link to={`/blog/${props.match.params.id}/edit`}>
           <button className="btn btn-primary btn-small">Edit</button>
+        </Link>
       </div>
-      
     </div>
   );
 };

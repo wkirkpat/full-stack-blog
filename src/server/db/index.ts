@@ -4,10 +4,10 @@ import Blogs from "./blogs";
 
 export const Connection = mysql.createConnection(config.mysql);
 
-Connection.connect(err => {
-    if(err) console.log(err);
-})
+Connection.connect((err) => {
+  if (err) console.log(err);
+});
 
 export default {
-    Blogs
-}
+  Blogs,
+};

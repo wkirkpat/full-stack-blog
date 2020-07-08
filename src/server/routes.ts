@@ -51,7 +51,13 @@ router.delete("/api/blogs/:id", async (req, res) => {
 router.put("/api/blogs/:id", async (req, res) => {
   try {
     res.json(
-      await DB.Blogs.updateBlog(req.body.title, req.body.content, req.params.id)
+      await DB.Blogs.updateBlog(
+        req.body.title,
+        req.body.content,
+        req.body.author,
+        req.body.tag,
+        req.params.id
+      )
     );
   } catch (e) {
     console.log(e);
@@ -60,21 +66,21 @@ router.put("/api/blogs/:id", async (req, res) => {
 });
 
 router.get("/api/blogs/:id/tags", async (req, res) => {
-    try{
-        res.json(await DB.Blogs.getBlogTags(req.params.id));
-    } catch(e) {
-        console.log(e);
-        res.sendStatus(500);
-    }
-})
-
-router.get("/api/tags", async (req, res) => {
-  try{
-    res.json(await DB.Blogs.getAllTags());
-  } catch(e) {
+  try {
+    res.json(await DB.Blogs.getBlogTags(req.params.id));
+  } catch (e) {
     console.log(e);
     res.sendStatus(500);
   }
-})
+});
+
+router.get("/api/tags", async (req, res) => {
+  try {
+    res.json(await DB.Blogs.getAllTags());
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
 
 export default router;
